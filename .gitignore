@@ -1,0 +1,15 @@
+/.elixir_ls
+/.fetch
+/_build
+/archives
+/cover
+/deps
+/doc
+/opsgenie-oas
+/out
+/packages
+
+.openapi-generator-ignore
+cache.ets
+erl_crash.dump
+*.ez
