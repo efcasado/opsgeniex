@@ -15,10 +15,10 @@ defmodule Opsgeniex.Model.IntegrationCondition do
   ]
 
   @type t :: %__MODULE__{
-    :field => String.t,
+    :field => String.t | nil,
     :not => boolean() | nil,
-    :operation => String.t,
-    :expectedValue => String.t
+    :operation => String.t | nil,
+    :expectedValue => String.t | nil
   }
 
   def decode(value) do

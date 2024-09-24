@@ -11,7 +11,7 @@ defmodule Opsgeniex.Api.Account do
 
   @doc """
   Get Account Info
-  Used to search and retrieve account information in OpsGenie
+  Used to search and retrieve account information in Opsgenie
 
   ### Parameters
 

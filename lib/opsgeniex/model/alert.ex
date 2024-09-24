@@ -25,7 +25,7 @@ defmodule Opsgeniex.Model.Alert do
     :source,
     :owner,
     :priority,
-    :teams,
+    :responders,
     :integration,
     :report,
     :actions,
@@ -52,7 +52,7 @@ defmodule Opsgeniex.Model.Alert do
     :source => String.t | nil,
     :owner => String.t | nil,
     :priority => String.t | nil,
-    :teams => [Opsgeniex.Model.AlertTeamMeta.t] | nil,
+    :responders => [Opsgeniex.Model.Responder.t] | nil,
     :integration => Opsgeniex.Model.AlertIntegration.t | nil,
     :report => Opsgeniex.Model.AlertReport.t | nil,
     :actions => [String.t] | nil,
@@ -69,7 +69,7 @@ defmodule Opsgeniex.Model.Alert do
      |> Deserializer.deserialize(:lastOccurredAt, :datetime, nil)
      |> Deserializer.deserialize(:createdAt, :datetime, nil)
      |> Deserializer.deserialize(:updatedAt, :datetime, nil)
-     |> Deserializer.deserialize(:teams, :list, Opsgeniex.Model.AlertTeamMeta)
+     |> Deserializer.deserialize(:responders, :list, Opsgeniex.Model.Responder)
      |> Deserializer.deserialize(:integration, :struct, Opsgeniex.Model.AlertIntegration)
      |> Deserializer.deserialize(:report, :struct, Opsgeniex.Model.AlertReport)
   end

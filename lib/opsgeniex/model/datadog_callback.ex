@@ -9,20 +9,26 @@ defmodule Opsgeniex.Model.DatadogCallback do
   @derive Jason.Encoder
   defstruct [
     :alertFilter,
-    :alertActions,
+    :forwardingEnabled,
+    :forwardingActionMappings,
     :"callback-type",
-    :sendAlertActions,
+    :updatesActionMappings,
+    :updatesEnabled,
     :"bidirectional-callback-type",
-    :token
+    :token,
+    :sendToEU
   ]
 
   @type t :: %__MODULE__{
     :alertFilter => Opsgeniex.Model.AlertFilter.t | nil,
-    :alertActions => [String.t] | nil,
+    :forwardingEnabled => boolean() | nil,
+    :forwardingActionMappings => [Opsgeniex.Model.ActionMapping.t] | nil,
     :"callback-type" => String.t | nil,
-    :sendAlertActions => boolean() | nil,
+    :updatesActionMappings => [Opsgeniex.Model.ActionMapping.t] | nil,
+    :updatesEnabled => boolean() | nil,
     :"bidirectional-callback-type" => String.t | nil,
-    :token => String.t | nil
+    :token => String.t | nil,
+    :sendToEU => boolean() | nil
   }
 
   alias Opsgeniex.Deserializer
@@ -30,6 +36,8 @@ defmodule Opsgeniex.Model.DatadogCallback do
   def decode(value) do
     value
      |> Deserializer.deserialize(:alertFilter, :struct, Opsgeniex.Model.AlertFilter)
+     |> Deserializer.deserialize(:forwardingActionMappings, :list, Opsgeniex.Model.ActionMapping)
+     |> Deserializer.deserialize(:updatesActionMappings, :list, Opsgeniex.Model.ActionMapping)
   end
 end
 

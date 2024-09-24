@@ -14,7 +14,7 @@ defmodule Opsgeniex.Model.CreateAlertPayload do
     :message,
     :alias,
     :description,
-    :teams,
+    :responders,
     :visibleTo,
     :actions,
     :tags,
@@ -30,7 +30,7 @@ defmodule Opsgeniex.Model.CreateAlertPayload do
     :message => String.t,
     :alias => String.t | nil,
     :description => String.t | nil,
-    :teams => [Opsgeniex.Model.TeamRecipient.t] | nil,
+    :responders => [Opsgeniex.Model.Recipient.t] | nil,
     :visibleTo => [Opsgeniex.Model.Recipient.t] | nil,
     :actions => [String.t] | nil,
     :tags => [String.t] | nil,
@@ -43,7 +43,7 @@ defmodule Opsgeniex.Model.CreateAlertPayload do
 
   def decode(value) do
     value
-     |> Deserializer.deserialize(:teams, :list, Opsgeniex.Model.TeamRecipient)
+     |> Deserializer.deserialize(:responders, :list, Opsgeniex.Model.Recipient)
      |> Deserializer.deserialize(:visibleTo, :list, Opsgeniex.Model.Recipient)
   end
 end

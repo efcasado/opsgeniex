@@ -199,6 +199,52 @@ defmodule Opsgeniex.Api.Alert do
   end
 
   @doc """
+  Add Responder
+  Add responder to alert with given identifier
+
+  ### Parameters
+
+  - `connection` (Opsgeniex.Connection): Connection to server
+  - `identifier` (String.t): Identifier of alert which could be alert id, tiny id or alert alias
+  - `body` (AddResponderToAlertPayload): Request payload of adding responder to alert action
+  - `opts` (keyword): Optional parameters
+    - `:identifierType` (String.t): Type of the identifier that is provided as an in-line parameter. Possible values are 'id', 'alias' or 'tiny'
+
+  ### Returns
+
+  - `{:ok, Opsgeniex.Model.SuccessResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec add_responder(Tesla.Env.client, String.t, Opsgeniex.Model.AddResponderToAlertPayload.t, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.SuccessResponse.t} | {:error, Tesla.Env.t}
+  def add_responder(connection, identifier, body, opts \\ []) do
+    optional_params = %{
+      :identifierType => :query
+    }
+
+    request =
+      %{}
+      |> method(:post)
+      |> url("/v2/alerts/#{identifier}/responders")
+      |> add_param(:body, :body, body)
+      |> add_optional_params(optional_params, opts)
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {202, Opsgeniex.Model.SuccessResponse},
+      {400, Opsgeniex.Model.ErrorResponse},
+      {401, Opsgeniex.Model.ErrorResponse},
+      {402, Opsgeniex.Model.ErrorResponse},
+      {403, Opsgeniex.Model.ErrorResponse},
+      {404, Opsgeniex.Model.ErrorResponse},
+      {422, Opsgeniex.Model.ErrorResponse},
+      {429, Opsgeniex.Model.ErrorResponse},
+      {:default, Opsgeniex.Model.ErrorResponse}
+    ])
+  end
+
+  @doc """
   Add Tags
   Add tags to the alert with given identifier
 
@@ -372,6 +418,53 @@ defmodule Opsgeniex.Api.Alert do
     |> Connection.request(request)
     |> evaluate_response([
       {202, Opsgeniex.Model.SuccessResponse},
+      {400, Opsgeniex.Model.ErrorResponse},
+      {401, Opsgeniex.Model.ErrorResponse},
+      {402, Opsgeniex.Model.ErrorResponse},
+      {403, Opsgeniex.Model.ErrorResponse},
+      {404, Opsgeniex.Model.ErrorResponse},
+      {422, Opsgeniex.Model.ErrorResponse},
+      {429, Opsgeniex.Model.ErrorResponse},
+      {:default, Opsgeniex.Model.ErrorResponse}
+    ])
+  end
+
+  @doc """
+  Count Alerts
+  Count alerts in Opsgenie
+
+  ### Parameters
+
+  - `connection` (Opsgeniex.Connection): Connection to server
+  - `opts` (keyword): Optional parameters
+    - `:query` (String.t): Search query to apply while filtering the alerts
+    - `:searchIdentifier` (String.t): Identifier of the saved search query to apply while filtering the alerts
+    - `:searchIdentifierType` (String.t): Identifier type of the saved search query. Possible values are id and name. Default value is id. If searchIdentifier is not provided, this value is ignored.
+
+  ### Returns
+
+  - `{:ok, Opsgeniex.Model.GetCountAlertsResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec count_alerts(Tesla.Env.client, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.GetCountAlertsResponse.t} | {:error, Tesla.Env.t}
+  def count_alerts(connection, opts \\ []) do
+    optional_params = %{
+      :query => :query,
+      :searchIdentifier => :query,
+      :searchIdentifierType => :query
+    }
+
+    request =
+      %{}
+      |> method(:get)
+      |> url("/v2/alerts/count")
+      |> add_optional_params(optional_params, opts)
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, Opsgeniex.Model.GetCountAlertsResponse},
       {400, Opsgeniex.Model.ErrorResponse},
       {401, Opsgeniex.Model.ErrorResponse},
       {402, Opsgeniex.Model.ErrorResponse},
@@ -1328,6 +1421,190 @@ defmodule Opsgeniex.Api.Alert do
     |> Connection.request(request)
     |> evaluate_response([
       {202, Opsgeniex.Model.SuccessResponse},
+      {400, Opsgeniex.Model.ErrorResponse},
+      {401, Opsgeniex.Model.ErrorResponse},
+      {402, Opsgeniex.Model.ErrorResponse},
+      {403, Opsgeniex.Model.ErrorResponse},
+      {404, Opsgeniex.Model.ErrorResponse},
+      {422, Opsgeniex.Model.ErrorResponse},
+      {429, Opsgeniex.Model.ErrorResponse},
+      {:default, Opsgeniex.Model.ErrorResponse}
+    ])
+  end
+
+  @doc """
+  Update Alert Description
+  Update the description of the alert with given identifier
+
+  ### Parameters
+
+  - `connection` (Opsgeniex.Connection): Connection to server
+  - `identifier` (String.t): Identifier of alert which could be alert id, tiny id or alert alias
+  - `body` (UpdateAlertDescriptionPayload): Request payload of update alert description
+  - `opts` (keyword): Optional parameters
+    - `:identifierType` (String.t): Type of the identifier that is provided as an in-line parameter. Possible values are 'id', 'alias' or 'tiny'
+
+  ### Returns
+
+  - `{:ok, Opsgeniex.Model.SuccessResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec update_alert_description(Tesla.Env.client, String.t, Opsgeniex.Model.UpdateAlertDescriptionPayload.t, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.SuccessResponse.t} | {:error, Tesla.Env.t}
+  def update_alert_description(connection, identifier, body, opts \\ []) do
+    optional_params = %{
+      :identifierType => :query
+    }
+
+    request =
+      %{}
+      |> method(:put)
+      |> url("/v2/alerts/#{identifier}/description")
+      |> add_param(:body, :body, body)
+      |> add_optional_params(optional_params, opts)
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {202, Opsgeniex.Model.SuccessResponse},
+      {400, Opsgeniex.Model.ErrorResponse},
+      {401, Opsgeniex.Model.ErrorResponse},
+      {402, Opsgeniex.Model.ErrorResponse},
+      {403, Opsgeniex.Model.ErrorResponse},
+      {404, Opsgeniex.Model.ErrorResponse},
+      {422, Opsgeniex.Model.ErrorResponse},
+      {429, Opsgeniex.Model.ErrorResponse},
+      {:default, Opsgeniex.Model.ErrorResponse}
+    ])
+  end
+
+  @doc """
+  Update Alert Message
+  Update the message of the alert with given identifier
+
+  ### Parameters
+
+  - `connection` (Opsgeniex.Connection): Connection to server
+  - `identifier` (String.t): Identifier of alert which could be alert id, tiny id or alert alias
+  - `body` (UpdateAlertMessagePayload): Request payload of update alert message
+  - `opts` (keyword): Optional parameters
+    - `:identifierType` (String.t): Type of the identifier that is provided as an in-line parameter. Possible values are 'id', 'alias' or 'tiny'
+
+  ### Returns
+
+  - `{:ok, Opsgeniex.Model.SuccessResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec update_alert_message(Tesla.Env.client, String.t, Opsgeniex.Model.UpdateAlertMessagePayload.t, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.SuccessResponse.t} | {:error, Tesla.Env.t}
+  def update_alert_message(connection, identifier, body, opts \\ []) do
+    optional_params = %{
+      :identifierType => :query
+    }
+
+    request =
+      %{}
+      |> method(:put)
+      |> url("/v2/alerts/#{identifier}/message")
+      |> add_param(:body, :body, body)
+      |> add_optional_params(optional_params, opts)
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {202, Opsgeniex.Model.SuccessResponse},
+      {400, Opsgeniex.Model.ErrorResponse},
+      {401, Opsgeniex.Model.ErrorResponse},
+      {402, Opsgeniex.Model.ErrorResponse},
+      {403, Opsgeniex.Model.ErrorResponse},
+      {404, Opsgeniex.Model.ErrorResponse},
+      {422, Opsgeniex.Model.ErrorResponse},
+      {429, Opsgeniex.Model.ErrorResponse},
+      {:default, Opsgeniex.Model.ErrorResponse}
+    ])
+  end
+
+  @doc """
+  Update Alert Priority
+  Update the priority of the alert with given identifier
+
+  ### Parameters
+
+  - `connection` (Opsgeniex.Connection): Connection to server
+  - `identifier` (String.t): Identifier of alert which could be alert id, tiny id or alert alias
+  - `body` (UpdateAlertPriorityPayload): Request payload of update alert priority
+  - `opts` (keyword): Optional parameters
+    - `:identifierType` (String.t): Type of the identifier that is provided as an in-line parameter. Possible values are 'id', 'alias' or 'tiny'
+
+  ### Returns
+
+  - `{:ok, Opsgeniex.Model.SuccessResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec update_alert_priority(Tesla.Env.client, String.t, Opsgeniex.Model.UpdateAlertPriorityPayload.t, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.SuccessResponse.t} | {:error, Tesla.Env.t}
+  def update_alert_priority(connection, identifier, body, opts \\ []) do
+    optional_params = %{
+      :identifierType => :query
+    }
+
+    request =
+      %{}
+      |> method(:put)
+      |> url("/v2/alerts/#{identifier}/priority")
+      |> add_param(:body, :body, body)
+      |> add_optional_params(optional_params, opts)
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {202, Opsgeniex.Model.SuccessResponse},
+      {400, Opsgeniex.Model.ErrorResponse},
+      {401, Opsgeniex.Model.ErrorResponse},
+      {402, Opsgeniex.Model.ErrorResponse},
+      {403, Opsgeniex.Model.ErrorResponse},
+      {404, Opsgeniex.Model.ErrorResponse},
+      {422, Opsgeniex.Model.ErrorResponse},
+      {429, Opsgeniex.Model.ErrorResponse},
+      {:default, Opsgeniex.Model.ErrorResponse}
+    ])
+  end
+
+  @doc """
+  Update Saved Search
+  Update saved search for the given search identifier
+
+  ### Parameters
+
+  - `connection` (Opsgeniex.Connection): Connection to server
+  - `identifier` (String.t): Identifier of the saved search which could be 'id' or 'name'
+  - `body` (UpdateSavedSearchPayload): Request payload of updating saved search
+  - `opts` (keyword): Optional parameters
+    - `:identifierType` (String.t): Type of the identifier that is provided as an in-line parameter. Possible values are 'id', or 'name'
+
+  ### Returns
+
+  - `{:ok, Opsgeniex.Model.GetSavedSearchResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec update_saved_search(Tesla.Env.client, String.t, Opsgeniex.Model.UpdateSavedSearchPayload.t, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.GetSavedSearchResponse.t} | {:error, Tesla.Env.t}
+  def update_saved_search(connection, identifier, body, opts \\ []) do
+    optional_params = %{
+      :identifierType => :query
+    }
+
+    request =
+      %{}
+      |> method(:patch)
+      |> url("/v2/alerts/saved-searches/#{identifier}")
+      |> add_param(:body, :body, body)
+      |> add_optional_params(optional_params, opts)
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, Opsgeniex.Model.GetSavedSearchResponse},
       {400, Opsgeniex.Model.ErrorResponse},
       {401, Opsgeniex.Model.ErrorResponse},
       {402, Opsgeniex.Model.ErrorResponse},

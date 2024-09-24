@@ -16,11 +16,12 @@ defmodule Opsgeniex.Model.CampfireIntegration do
     :isGlobal,
     :_readOnly,
     :alertFilter,
-    :forwardingEnabled,
-    :forwardingActionMappings,
+    :alertActions,
     :"callback-type",
-    :topicArn,
-    :region
+    :token,
+    :subdomain,
+    :notify,
+    :rooms
   ]
 
   @type t :: %__MODULE__{
@@ -32,11 +33,12 @@ defmodule Opsgeniex.Model.CampfireIntegration do
     :isGlobal => boolean() | nil,
     :_readOnly => [String.t] | nil,
     :alertFilter => Opsgeniex.Model.AlertFilter.t | nil,
-    :forwardingEnabled => boolean() | nil,
-    :forwardingActionMappings => [Opsgeniex.Model.ActionMapping.t] | nil,
+    :alertActions => [String.t] | nil,
     :"callback-type" => String.t | nil,
-    :topicArn => String.t | nil,
-    :region => String.t | nil
+    :token => String.t | nil,
+    :subdomain => String.t | nil,
+    :notify => boolean() | nil,
+    :rooms => [String.t] | nil
   }
 
   alias Opsgeniex.Deserializer
@@ -45,7 +47,6 @@ defmodule Opsgeniex.Model.CampfireIntegration do
     value
      |> Deserializer.deserialize(:ownerTeam, :struct, Opsgeniex.Model.TeamMeta)
      |> Deserializer.deserialize(:alertFilter, :struct, Opsgeniex.Model.AlertFilter)
-     |> Deserializer.deserialize(:forwardingActionMappings, :list, Opsgeniex.Model.ActionMapping)
   end
 end
 

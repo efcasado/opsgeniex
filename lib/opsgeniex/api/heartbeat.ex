@@ -202,6 +202,42 @@ defmodule Opsgeniex.Api.Heartbeat do
   end
 
   @doc """
+  List Heartbeats
+  Returns list of Heartbeats
+
+  ### Parameters
+
+  - `connection` (Opsgeniex.Connection): Connection to server
+  - `opts` (keyword): Optional parameters
+
+  ### Returns
+
+  - `{:ok, Opsgeniex.Model.ListHeartbeatResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec list_heart_beats(Tesla.Env.client, keyword()) :: {:ok, Opsgeniex.Model.ListHeartbeatResponse.t} | {:ok, Opsgeniex.Model.ErrorResponse.t} | {:error, Tesla.Env.t}
+  def list_heart_beats(connection, _opts \\ []) do
+    request =
+      %{}
+      |> method(:get)
+      |> url("/v2/heartbeats")
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, Opsgeniex.Model.ListHeartbeatResponse},
+      {400, Opsgeniex.Model.ErrorResponse},
+      {401, Opsgeniex.Model.ErrorResponse},
+      {402, Opsgeniex.Model.ErrorResponse},
+      {403, Opsgeniex.Model.ErrorResponse},
+      {422, Opsgeniex.Model.ErrorResponse},
+      {429, Opsgeniex.Model.ErrorResponse},
+      {:default, Opsgeniex.Model.ErrorResponse}
+    ])
+  end
+
+  @doc """
   Ping Heartbeat
   Ping Heartbeat for given heartbeat name
 

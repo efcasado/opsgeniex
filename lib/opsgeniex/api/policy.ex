@@ -10,28 +10,34 @@ defmodule Opsgeniex.Api.Policy do
   import Opsgeniex.RequestBuilder
 
   @doc """
-  Change Alert Policy Order
-  Change execution order of the alert policy with given id
+  Change Policy Order
+  Change execution order of the policy with given id
 
   ### Parameters
 
   - `connection` (Opsgeniex.Connection): Connection to server
   - `policy_id` (String.t): Id of the requested policy
-  - `body` (ChangeAlertPolicyOrderPayload): Change order payload
+  - `body` (ChangePolicyOrderPayload): Change order payload
   - `opts` (keyword): Optional parameters
+    - `:teamId` (String.t): TeamId of policy created if it belongs to a team
 
   ### Returns
 
   - `{:ok, Opsgeniex.Model.SuccessResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec change_alert_policy_order(Tesla.Env.client, String.t, Opsgeniex.Model.ChangeAlertPolicyOrderPayload.t, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.SuccessResponse.t} | {:error, Tesla.Env.t}
-  def change_alert_policy_order(connection, policy_id, body, _opts \\ []) do
+  @spec change_policy_order(Tesla.Env.client, String.t, Opsgeniex.Model.ChangePolicyOrderPayload.t, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.SuccessResponse.t} | {:error, Tesla.Env.t}
+  def change_policy_order(connection, policy_id, body, opts \\ []) do
+    optional_params = %{
+      :teamId => :query
+    }
+
     request =
       %{}
       |> method(:post)
-      |> url("/v1/policies/#{policy_id}/change-order")
+      |> url("/v2/policies/#{policy_id}/change-order")
       |> add_param(:body, :body, body)
+      |> add_optional_params(optional_params, opts)
       |> Enum.into([])
 
     connection
@@ -50,33 +56,39 @@ defmodule Opsgeniex.Api.Policy do
   end
 
   @doc """
-  Create Alert Policy
-  Creates a new alert policy
+  Create Policy
+  Creates a new policy
 
   ### Parameters
 
   - `connection` (Opsgeniex.Connection): Connection to server
-  - `body` (AlertPolicy): Payload of created alert policy
+  - `body` (Policy): Payload of created policy
   - `opts` (keyword): Optional parameters
+    - `:teamId` (String.t): TeamId of policy created if it belongs to a team
 
   ### Returns
 
-  - `{:ok, Opsgeniex.Model.CreateAlertPolicyResponse.t}` on success
+  - `{:ok, Opsgeniex.Model.CreatePolicyResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec create_alert_policy(Tesla.Env.client, Opsgeniex.Model.AlertPolicy.t, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.CreateAlertPolicyResponse.t} | {:error, Tesla.Env.t}
-  def create_alert_policy(connection, body, _opts \\ []) do
+  @spec create_policy(Tesla.Env.client, Opsgeniex.Model.Policy.t, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.CreatePolicyResponse.t} | {:error, Tesla.Env.t}
+  def create_policy(connection, body, opts \\ []) do
+    optional_params = %{
+      :teamId => :query
+    }
+
     request =
       %{}
       |> method(:post)
-      |> url("/v1/policies")
+      |> url("/v2/policies")
       |> add_param(:body, :body, body)
+      |> add_optional_params(optional_params, opts)
       |> Enum.into([])
 
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {201, Opsgeniex.Model.CreateAlertPolicyResponse},
+      {201, Opsgeniex.Model.CreatePolicyResponse},
       {400, Opsgeniex.Model.ErrorResponse},
       {401, Opsgeniex.Model.ErrorResponse},
       {402, Opsgeniex.Model.ErrorResponse},
@@ -88,26 +100,32 @@ defmodule Opsgeniex.Api.Policy do
   end
 
   @doc """
-  Delete Alert Policy
-  Delete alert policy with given id
+  Delete Policy
+  Delete policy with given id
 
   ### Parameters
 
   - `connection` (Opsgeniex.Connection): Connection to server
   - `policy_id` (String.t): Id of the requested policy
   - `opts` (keyword): Optional parameters
+    - `:teamId` (String.t): TeamId of policy created if it belongs to a team
 
   ### Returns
 
   - `{:ok, Opsgeniex.Model.SuccessResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec delete_alert_policy(Tesla.Env.client, String.t, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.SuccessResponse.t} | {:error, Tesla.Env.t}
-  def delete_alert_policy(connection, policy_id, _opts \\ []) do
+  @spec delete_policy(Tesla.Env.client, String.t, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.SuccessResponse.t} | {:error, Tesla.Env.t}
+  def delete_policy(connection, policy_id, opts \\ []) do
+    optional_params = %{
+      :teamId => :query
+    }
+
     request =
       %{}
       |> method(:delete)
-      |> url("/v1/policies/#{policy_id}")
+      |> url("/v2/policies/#{policy_id}")
+      |> add_optional_params(optional_params, opts)
       |> Enum.into([])
 
     connection
@@ -126,26 +144,32 @@ defmodule Opsgeniex.Api.Policy do
   end
 
   @doc """
-  Disable Alert Policy
-  Disable the alert policy with given id
+  Disable Policy
+  Disable the policy with given id
 
   ### Parameters
 
   - `connection` (Opsgeniex.Connection): Connection to server
   - `policy_id` (String.t): Id of the requested policy
   - `opts` (keyword): Optional parameters
+    - `:teamId` (String.t): TeamId of policy created if it belongs to a team
 
   ### Returns
 
   - `{:ok, Opsgeniex.Model.SuccessResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec disable_alert_policy(Tesla.Env.client, String.t, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.SuccessResponse.t} | {:error, Tesla.Env.t}
-  def disable_alert_policy(connection, policy_id, _opts \\ []) do
+  @spec disable_policy(Tesla.Env.client, String.t, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.SuccessResponse.t} | {:error, Tesla.Env.t}
+  def disable_policy(connection, policy_id, opts \\ []) do
+    optional_params = %{
+      :teamId => :query
+    }
+
     request =
       %{}
       |> method(:post)
-      |> url("/v1/policies/#{policy_id}/disable")
+      |> url("/v2/policies/#{policy_id}/disable")
+      |> add_optional_params(optional_params, opts)
       |> ensure_body()
       |> Enum.into([])
 
@@ -165,26 +189,32 @@ defmodule Opsgeniex.Api.Policy do
   end
 
   @doc """
-  Enable Alert Policy
-  Enable the alert policy with given id
+  Enable Policy
+  Enable the policy with given id
 
   ### Parameters
 
   - `connection` (Opsgeniex.Connection): Connection to server
   - `policy_id` (String.t): Id of the requested policy
   - `opts` (keyword): Optional parameters
+    - `:teamId` (String.t): TeamId of policy created if it belongs to a team
 
   ### Returns
 
   - `{:ok, Opsgeniex.Model.SuccessResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec enable_alert_policy(Tesla.Env.client, String.t, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.SuccessResponse.t} | {:error, Tesla.Env.t}
-  def enable_alert_policy(connection, policy_id, _opts \\ []) do
+  @spec enable_policy(Tesla.Env.client, String.t, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.SuccessResponse.t} | {:error, Tesla.Env.t}
+  def enable_policy(connection, policy_id, opts \\ []) do
+    optional_params = %{
+      :teamId => :query
+    }
+
     request =
       %{}
       |> method(:post)
-      |> url("/v1/policies/#{policy_id}/enable")
+      |> url("/v2/policies/#{policy_id}/enable")
+      |> add_optional_params(optional_params, opts)
       |> ensure_body()
       |> Enum.into([])
 
@@ -204,7 +234,7 @@ defmodule Opsgeniex.Api.Policy do
   end
 
   @doc """
-  Get Alert Policy
+  Get Policy
   Used to get details of a single policy with id
 
   ### Parameters
@@ -212,24 +242,30 @@ defmodule Opsgeniex.Api.Policy do
   - `connection` (Opsgeniex.Connection): Connection to server
   - `policy_id` (String.t): Id of the requested policy
   - `opts` (keyword): Optional parameters
+    - `:teamId` (String.t): TeamId of policy created if it belongs to a team
 
   ### Returns
 
-  - `{:ok, Opsgeniex.Model.GetAlertPolicyResponse.t}` on success
+  - `{:ok, Opsgeniex.Model.GetPolicyResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec get_alert_policy(Tesla.Env.client, String.t, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.GetAlertPolicyResponse.t} | {:error, Tesla.Env.t}
-  def get_alert_policy(connection, policy_id, _opts \\ []) do
+  @spec get_policy(Tesla.Env.client, String.t, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.GetPolicyResponse.t} | {:error, Tesla.Env.t}
+  def get_policy(connection, policy_id, opts \\ []) do
+    optional_params = %{
+      :teamId => :query
+    }
+
     request =
       %{}
       |> method(:get)
-      |> url("/v1/policies/#{policy_id}")
+      |> url("/v2/policies/#{policy_id}")
+      |> add_optional_params(optional_params, opts)
       |> Enum.into([])
 
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, Opsgeniex.Model.GetAlertPolicyResponse},
+      {200, Opsgeniex.Model.GetPolicyResponse},
       {400, Opsgeniex.Model.ErrorResponse},
       {401, Opsgeniex.Model.ErrorResponse},
       {402, Opsgeniex.Model.ErrorResponse},
@@ -243,30 +279,36 @@ defmodule Opsgeniex.Api.Policy do
 
   @doc """
   List Alert Policies
-  Returns list alert policies
+  Returns the list of alert policies
 
   ### Parameters
 
   - `connection` (Opsgeniex.Connection): Connection to server
   - `opts` (keyword): Optional parameters
+    - `:teamId` (String.t): TeamId of policy created if it belongs to a team
 
   ### Returns
 
-  - `{:ok, Opsgeniex.Model.ListAlertPoliciesResponse.t}` on success
+  - `{:ok, Opsgeniex.Model.ListPoliciesResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec list_alert_policies(Tesla.Env.client, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.ListAlertPoliciesResponse.t} | {:error, Tesla.Env.t}
-  def list_alert_policies(connection, _opts \\ []) do
+  @spec list_alert_policies(Tesla.Env.client, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.ListPoliciesResponse.t} | {:error, Tesla.Env.t}
+  def list_alert_policies(connection, opts \\ []) do
+    optional_params = %{
+      :teamId => :query
+    }
+
     request =
       %{}
       |> method(:get)
-      |> url("/v1/policies")
+      |> url("/v2/policies/alert")
+      |> add_optional_params(optional_params, opts)
       |> Enum.into([])
 
     connection
     |> Connection.request(request)
     |> evaluate_response([
-      {200, Opsgeniex.Model.ListAlertPoliciesResponse},
+      {200, Opsgeniex.Model.ListPoliciesResponse},
       {400, Opsgeniex.Model.ErrorResponse},
       {401, Opsgeniex.Model.ErrorResponse},
       {402, Opsgeniex.Model.ErrorResponse},
@@ -277,28 +319,75 @@ defmodule Opsgeniex.Api.Policy do
   end
 
   @doc """
-  Update Alert Policy
+  List Notification Policies
+  Returns the list of notification policies
+
+  ### Parameters
+
+  - `connection` (Opsgeniex.Connection): Connection to server
+  - `opts` (keyword): Optional parameters
+    - `:teamId` (String.t): TeamId of policy created if it belongs to a team
+
+  ### Returns
+
+  - `{:ok, Opsgeniex.Model.ListPoliciesResponse.t}` on success
+  - `{:error, Tesla.Env.t}` on failure
+  """
+  @spec list_notification_policies(Tesla.Env.client, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.ListPoliciesResponse.t} | {:error, Tesla.Env.t}
+  def list_notification_policies(connection, opts \\ []) do
+    optional_params = %{
+      :teamId => :query
+    }
+
+    request =
+      %{}
+      |> method(:get)
+      |> url("/v2/policies/notification")
+      |> add_optional_params(optional_params, opts)
+      |> Enum.into([])
+
+    connection
+    |> Connection.request(request)
+    |> evaluate_response([
+      {200, Opsgeniex.Model.ListPoliciesResponse},
+      {400, Opsgeniex.Model.ErrorResponse},
+      {401, Opsgeniex.Model.ErrorResponse},
+      {402, Opsgeniex.Model.ErrorResponse},
+      {403, Opsgeniex.Model.ErrorResponse},
+      {429, Opsgeniex.Model.ErrorResponse},
+      {:default, Opsgeniex.Model.ErrorResponse}
+    ])
+  end
+
+  @doc """
+  Update Policy
   Update alert policy with given id
 
   ### Parameters
 
   - `connection` (Opsgeniex.Connection): Connection to server
   - `policy_id` (String.t): Id of the requested policy
-  - `body` (AlertPolicy): Payload of updated alert policy
+  - `body` (Policy): Payload of updated policy
   - `opts` (keyword): Optional parameters
+    - `:teamId` (String.t): TeamId of policy created if it belongs to a team
 
   ### Returns
 
   - `{:ok, Opsgeniex.Model.SuccessResponse.t}` on success
   - `{:error, Tesla.Env.t}` on failure
   """
-  @spec update_alert_policy(Tesla.Env.client, String.t, Opsgeniex.Model.AlertPolicy.t, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.SuccessResponse.t} | {:error, Tesla.Env.t}
-  def update_alert_policy(connection, policy_id, body, _opts \\ []) do
+  @spec update_policy(Tesla.Env.client, String.t, Opsgeniex.Model.Policy.t, keyword()) :: {:ok, Opsgeniex.Model.ErrorResponse.t} | {:ok, Opsgeniex.Model.SuccessResponse.t} | {:error, Tesla.Env.t}
+  def update_policy(connection, policy_id, body, opts \\ []) do
+    optional_params = %{
+      :teamId => :query
+    }
+
     request =
       %{}
       |> method(:put)
-      |> url("/v1/policies/#{policy_id}")
+      |> url("/v2/policies/#{policy_id}")
       |> add_param(:body, :body, body)
+      |> add_optional_params(optional_params, opts)
       |> Enum.into([])
 
     connection

@@ -12,7 +12,11 @@ defmodule Opsgeniex.Model.CreateHeartbeatPayload do
     :description,
     :interval,
     :intervalUnit,
-    :enabled
+    :enabled,
+    :ownerTeam,
+    :alertMessage,
+    :alertTags,
+    :alertPriority
   ]
 
   @type t :: %__MODULE__{
@@ -20,11 +24,18 @@ defmodule Opsgeniex.Model.CreateHeartbeatPayload do
     :description => String.t | nil,
     :interval => integer(),
     :intervalUnit => String.t,
-    :enabled => boolean()
+    :enabled => boolean(),
+    :ownerTeam => Opsgeniex.Model.CreateHeartbeatPayloadAllOfOwnerTeam.t | nil,
+    :alertMessage => String.t | nil,
+    :alertTags => [String.t] | nil,
+    :alertPriority => String.t | nil
   }
+
+  alias Opsgeniex.Deserializer
 
   def decode(value) do
     value
+     |> Deserializer.deserialize(:ownerTeam, :struct, Opsgeniex.Model.CreateHeartbeatPayloadAllOfOwnerTeam)
   end
 end
 

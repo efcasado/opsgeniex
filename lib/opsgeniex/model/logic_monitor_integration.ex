@@ -20,13 +20,26 @@ defmodule Opsgeniex.Model.LogicMonitorIntegration do
     :ignoreRecipientsFromPayload,
     :recipients,
     :isAdvanced,
+    :ignoreRespondersFromPayload,
+    :ignoreTagsFromPayload,
+    :ignoreExtraPropertiesFromPayload,
+    :responders,
+    :priority,
+    :customPriority,
+    :tags,
+    :extraProperties,
+    :assignedTeam,
     :"feature-type",
     :allowConfigurationAccess,
+    :allowReadAccess,
     :allowWriteAccess,
+    :allowDeleteAccess,
     :alertFilter,
-    :alertActions,
+    :forwardingEnabled,
+    :forwardingActionMappings,
     :"callback-type",
-    :sendAlertActions,
+    :updatesActionMappings,
+    :updatesEnabled,
     :"bidirectional-callback-type",
     :accountName,
     :username,
@@ -46,13 +59,26 @@ defmodule Opsgeniex.Model.LogicMonitorIntegration do
     :ignoreRecipientsFromPayload => boolean() | nil,
     :recipients => [Opsgeniex.Model.Recipient.t] | nil,
     :isAdvanced => boolean() | nil,
+    :ignoreRespondersFromPayload => boolean() | nil,
+    :ignoreTagsFromPayload => boolean() | nil,
+    :ignoreExtraPropertiesFromPayload => boolean() | nil,
+    :responders => [Opsgeniex.Model.Recipient.t] | nil,
+    :priority => String.t | nil,
+    :customPriority => String.t | nil,
+    :tags => [String.t] | nil,
+    :extraProperties => %{optional(String.t) => String.t} | nil,
+    :assignedTeam => Opsgeniex.Model.TeamMeta.t | nil,
     :"feature-type" => String.t | nil,
     :allowConfigurationAccess => boolean() | nil,
+    :allowReadAccess => boolean() | nil,
     :allowWriteAccess => boolean() | nil,
+    :allowDeleteAccess => boolean() | nil,
     :alertFilter => Opsgeniex.Model.AlertFilter.t | nil,
-    :alertActions => [String.t] | nil,
+    :forwardingEnabled => boolean() | nil,
+    :forwardingActionMappings => [Opsgeniex.Model.ActionMapping.t] | nil,
     :"callback-type" => String.t | nil,
-    :sendAlertActions => boolean() | nil,
+    :updatesActionMappings => [Opsgeniex.Model.ActionMapping.t] | nil,
+    :updatesEnabled => boolean() | nil,
     :"bidirectional-callback-type" => String.t | nil,
     :accountName => String.t | nil,
     :username => String.t | nil,
@@ -65,7 +91,11 @@ defmodule Opsgeniex.Model.LogicMonitorIntegration do
     value
      |> Deserializer.deserialize(:ownerTeam, :struct, Opsgeniex.Model.TeamMeta)
      |> Deserializer.deserialize(:recipients, :list, Opsgeniex.Model.Recipient)
+     |> Deserializer.deserialize(:responders, :list, Opsgeniex.Model.Recipient)
+     |> Deserializer.deserialize(:assignedTeam, :struct, Opsgeniex.Model.TeamMeta)
      |> Deserializer.deserialize(:alertFilter, :struct, Opsgeniex.Model.AlertFilter)
+     |> Deserializer.deserialize(:forwardingActionMappings, :list, Opsgeniex.Model.ActionMapping)
+     |> Deserializer.deserialize(:updatesActionMappings, :list, Opsgeniex.Model.ActionMapping)
   end
 end
 
