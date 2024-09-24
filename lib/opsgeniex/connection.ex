@@ -29,10 +29,12 @@ defmodule Opsgeniex.Connection do
 
   - `base_url`: Overrides the base URL on a per-client basis.
   - `user_agent`: Overrides the User-Agent header.
+  - `api_key`: Overrides the API key.
   """
   @type options :: [
           {:base_url, String.t()},
           {:user_agent, String.t()},
+          {:api_key, String.t()}
         ]
 
   @doc "Forward requests to Tesla."
@@ -100,11 +102,16 @@ defmodule Opsgeniex.Connection do
         )
       )
 
-
+    api_key =
+      Keyword.get(
+        options,
+        :api_key,
+        Application.get_env(:opsgeniex, :api_key, nil)
+      )
 
     [
       {Tesla.Middleware.BaseUrl, base_url},
-      {Tesla.Middleware.Headers, [{"user-agent", user_agent}]},
+      {Tesla.Middleware.Headers, [{"user-agent", user_agent}, {"authorization", "GenieKey #{api_key}"}]},
       {Tesla.Middleware.EncodeJson, engine: json_engine}
       | middleware
     ]
