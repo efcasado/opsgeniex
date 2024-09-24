@@ -17,3 +17,12 @@ def deps do
   ]
 end
 ```
+
+
+## Usage
+
+```elixir
+client = Opsgeniex.Connection.new(base_url: "https://api.eu.opsgenie.com", api_key: "your_api_key")
+
+{:ok, response} = Opsgeniex.Api.Team.list_teams(client)
+```
