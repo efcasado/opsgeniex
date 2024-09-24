@@ -11,20 +11,54 @@ defmodule Opsgeniex.Model.AlertPolicy do
     :id,
     :name,
     :policyDescription,
+    :teamId,
     :filter,
     :timeRestrictions,
     :enabled,
-    :type
+    :type,
+    :ignoreOriginalActions,
+    :ignoreOriginalDetails,
+    :ignoreOriginalResponders,
+    :ignoreOriginalTags,
+    :ignoreOriginalTeams,
+    :continue,
+    :alias,
+    :description,
+    :entity,
+    :message,
+    :source,
+    :actions,
+    :responders,
+    :tags,
+    :details,
+    :priority
   ]
 
   @type t :: %__MODULE__{
     :id => String.t | nil,
     :name => String.t | nil,
     :policyDescription => String.t | nil,
+    :teamId => String.t | nil,
     :filter => Opsgeniex.Model.Filter.t | nil,
     :timeRestrictions => Opsgeniex.Model.TimeRestrictionInterval.t | nil,
     :enabled => boolean() | nil,
-    :type => String.t
+    :type => String.t,
+    :ignoreOriginalActions => boolean() | nil,
+    :ignoreOriginalDetails => boolean() | nil,
+    :ignoreOriginalResponders => boolean() | nil,
+    :ignoreOriginalTags => boolean() | nil,
+    :ignoreOriginalTeams => boolean() | nil,
+    :continue => boolean() | nil,
+    :alias => String.t | nil,
+    :description => String.t | nil,
+    :entity => String.t | nil,
+    :message => String.t | nil,
+    :source => String.t | nil,
+    :actions => [String.t] | nil,
+    :responders => [Opsgeniex.Model.Responder.t] | nil,
+    :tags => [String.t] | nil,
+    :details => %{optional(String.t) => String.t} | nil,
+    :priority => String.t | nil
   }
 
   alias Opsgeniex.Deserializer
@@ -33,6 +67,7 @@ defmodule Opsgeniex.Model.AlertPolicy do
     value
      |> Deserializer.deserialize(:filter, :struct, Opsgeniex.Model.Filter)
      |> Deserializer.deserialize(:timeRestrictions, :struct, Opsgeniex.Model.TimeRestrictionInterval)
+     |> Deserializer.deserialize(:responders, :list, Opsgeniex.Model.Responder)
   end
 end
 

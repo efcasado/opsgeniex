@@ -15,9 +15,9 @@ defmodule Opsgeniex.Model.IgnoreIntegrationAction do
   ]
 
   @type t :: %__MODULE__{
-    :name => String.t | nil,
+    :name => String.t,
     :order => integer() | nil,
-    :filter => Opsgeniex.Model.IntegrationActionFilter.t | nil,
+    :filter => Opsgeniex.Model.IntegrationActionFilter.t,
     :type => String.t
   }
 

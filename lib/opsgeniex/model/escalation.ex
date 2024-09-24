@@ -12,7 +12,8 @@ defmodule Opsgeniex.Model.Escalation do
     :name,
     :description,
     :ownerTeam,
-    :rules
+    :rules,
+    :repeat
   ]
 
   @type t :: %__MODULE__{
@@ -20,7 +21,8 @@ defmodule Opsgeniex.Model.Escalation do
     :name => String.t | nil,
     :description => String.t | nil,
     :ownerTeam => Opsgeniex.Model.TeamMeta.t | nil,
-    :rules => [Opsgeniex.Model.EscalationRule.t] | nil
+    :rules => [Opsgeniex.Model.EscalationRule.t] | nil,
+    :repeat => Opsgeniex.Model.EscalationRepeat.t | nil
   }
 
   alias Opsgeniex.Deserializer
@@ -29,6 +31,7 @@ defmodule Opsgeniex.Model.Escalation do
     value
      |> Deserializer.deserialize(:ownerTeam, :struct, Opsgeniex.Model.TeamMeta)
      |> Deserializer.deserialize(:rules, :list, Opsgeniex.Model.EscalationRule)
+     |> Deserializer.deserialize(:repeat, :struct, Opsgeniex.Model.EscalationRepeat)
   end
 end
 

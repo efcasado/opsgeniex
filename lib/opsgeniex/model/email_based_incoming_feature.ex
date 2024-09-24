@@ -13,6 +13,15 @@ defmodule Opsgeniex.Model.EmailBasedIncomingFeature do
     :ignoreRecipientsFromPayload,
     :recipients,
     :isAdvanced,
+    :ignoreRespondersFromPayload,
+    :ignoreTagsFromPayload,
+    :ignoreExtraPropertiesFromPayload,
+    :responders,
+    :priority,
+    :customPriority,
+    :tags,
+    :extraProperties,
+    :assignedTeam,
     :"feature-type",
     :emailAddress,
     :emailUsername
@@ -24,6 +33,15 @@ defmodule Opsgeniex.Model.EmailBasedIncomingFeature do
     :ignoreRecipientsFromPayload => boolean() | nil,
     :recipients => [Opsgeniex.Model.Recipient.t] | nil,
     :isAdvanced => boolean() | nil,
+    :ignoreRespondersFromPayload => boolean() | nil,
+    :ignoreTagsFromPayload => boolean() | nil,
+    :ignoreExtraPropertiesFromPayload => boolean() | nil,
+    :responders => [Opsgeniex.Model.Recipient.t] | nil,
+    :priority => String.t | nil,
+    :customPriority => String.t | nil,
+    :tags => [String.t] | nil,
+    :extraProperties => %{optional(String.t) => String.t} | nil,
+    :assignedTeam => Opsgeniex.Model.TeamMeta.t | nil,
     :"feature-type" => String.t | nil,
     :emailAddress => String.t | nil,
     :emailUsername => String.t | nil
@@ -34,6 +52,8 @@ defmodule Opsgeniex.Model.EmailBasedIncomingFeature do
   def decode(value) do
     value
      |> Deserializer.deserialize(:recipients, :list, Opsgeniex.Model.Recipient)
+     |> Deserializer.deserialize(:responders, :list, Opsgeniex.Model.Recipient)
+     |> Deserializer.deserialize(:assignedTeam, :struct, Opsgeniex.Model.TeamMeta)
   end
 end
 

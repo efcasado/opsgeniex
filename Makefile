@@ -1,15 +1,12 @@
-.PHONY: allcodegen clean
+.PHONY: all codegen clean
 
 SHELL := BASH_ENV=.rc /bin/bash --noprofile
 
 OPENAPI_CODEGEN_VERSION?=v7.8.0
 OPENAPI_CODEGEN_IMAGE?=openapitools/openapi-generator-cli
 
-SWAGGER_MERGE_IMAGE?=properdom/swagger-merger
-SWAGGER_MERGE_VERSION?=latest
-
-OPSGENIE_OPENAPI_SPEC_REPO?=git@github.com:opsgenie/opsgenie-oas.git
-OPSGENIE_OPENAPI_SPEC_VERSION?=v1.0.0
+OPSGENIE_OPENAPI_SPEC_REPO?=git@github.com:bougar/opsgenie-oas.git
+OPSGENIE_OPENAPI_SPEC_VERSION?=master
 OPSGENIE_OPENAPI_SPEC_DIR?=opsgenie-oas
 
 all: codegen build

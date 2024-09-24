@@ -194,7 +194,6 @@ defmodule Opsgeniex.Api.Team do
 
   - `connection` (Opsgeniex.Connection): Connection to server
   - `opts` (keyword): Optional parameters
-    - `:expand` ([String.t]): Returns more detailed response with expanding it. Possible value is 'member' which is also returned with expandable field of response
 
   ### Returns
 
@@ -202,16 +201,11 @@ defmodule Opsgeniex.Api.Team do
   - `{:error, Tesla.Env.t}` on failure
   """
   @spec list_teams(Tesla.Env.client, keyword()) :: {:ok, Opsgeniex.Model.ListTeamsResponse.t} | {:ok, Opsgeniex.Model.ErrorResponse.t} | {:error, Tesla.Env.t}
-  def list_teams(connection, opts \\ []) do
-    optional_params = %{
-      :expand => :query
-    }
-
+  def list_teams(connection, _opts \\ []) do
     request =
       %{}
       |> method(:get)
       |> url("/v2/teams")
-      |> add_optional_params(optional_params, opts)
       |> Enum.into([])
 
     connection

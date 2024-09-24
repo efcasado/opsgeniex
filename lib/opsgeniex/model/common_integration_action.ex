@@ -8,19 +8,30 @@ defmodule Opsgeniex.Model.CommonIntegrationAction do
 
   @derive Jason.Encoder
   defstruct [
+    :name,
+    :order,
+    :filter,
+    :type,
     :user,
     :note,
     :alias
   ]
 
   @type t :: %__MODULE__{
+    :name => String.t,
+    :order => integer() | nil,
+    :filter => Opsgeniex.Model.IntegrationActionFilter.t,
+    :type => String.t,
     :user => String.t | nil,
     :note => String.t | nil,
     :alias => String.t | nil
   }
 
+  alias Opsgeniex.Deserializer
+
   def decode(value) do
     value
+     |> Deserializer.deserialize(:filter, :struct, Opsgeniex.Model.IntegrationActionFilter)
   end
 end
 

@@ -20,22 +20,25 @@ defmodule Opsgeniex.Model.CreateIntegrationAction do
     :description,
     :entity,
     :priority,
+    :customPriority,
     :appendAttachments,
     :alertActions,
     :ignoreAlertActionsFromPayload,
     :recipients,
+    :responders,
     :ignoreRecipientsFromPayload,
     :ignoreTeamsFromPayload,
     :tags,
     :ignoreTagsFromPayload,
     :extraProperties,
-    :ignoreExtraPropertiesFromPayload
+    :ignoreExtraPropertiesFromPayload,
+    :ignoreRespondersFromPayload
   ]
 
   @type t :: %__MODULE__{
-    :name => String.t | nil,
+    :name => String.t,
     :order => integer() | nil,
-    :filter => Opsgeniex.Model.IntegrationActionFilter.t | nil,
+    :filter => Opsgeniex.Model.IntegrationActionFilter.t,
     :type => String.t,
     :user => String.t | nil,
     :note => String.t | nil,
@@ -45,16 +48,19 @@ defmodule Opsgeniex.Model.CreateIntegrationAction do
     :description => String.t | nil,
     :entity => String.t | nil,
     :priority => String.t | nil,
+    :customPriority => String.t | nil,
     :appendAttachments => boolean() | nil,
     :alertActions => [String.t] | nil,
     :ignoreAlertActionsFromPayload => boolean() | nil,
     :recipients => [Opsgeniex.Model.Recipient.t] | nil,
+    :responders => [Opsgeniex.Model.Recipient.t] | nil,
     :ignoreRecipientsFromPayload => boolean() | nil,
     :ignoreTeamsFromPayload => boolean() | nil,
     :tags => [String.t] | nil,
     :ignoreTagsFromPayload => boolean() | nil,
     :extraProperties => %{optional(String.t) => String.t} | nil,
-    :ignoreExtraPropertiesFromPayload => boolean() | nil
+    :ignoreExtraPropertiesFromPayload => boolean() | nil,
+    :ignoreRespondersFromPayload => boolean() | nil
   }
 
   alias Opsgeniex.Deserializer
@@ -63,6 +69,7 @@ defmodule Opsgeniex.Model.CreateIntegrationAction do
     value
      |> Deserializer.deserialize(:filter, :struct, Opsgeniex.Model.IntegrationActionFilter)
      |> Deserializer.deserialize(:recipients, :list, Opsgeniex.Model.Recipient)
+     |> Deserializer.deserialize(:responders, :list, Opsgeniex.Model.Recipient)
   end
 end
 

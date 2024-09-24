@@ -9,18 +9,26 @@ defmodule Opsgeniex.Model.WebhookCallback do
   @derive Jason.Encoder
   defstruct [
     :alertFilter,
-    :alertActions,
+    :forwardingEnabled,
+    :forwardingActionMappings,
     :"callback-type",
     :url,
-    :headers
+    :headers,
+    :addAlertDetails,
+    :addAlertDescription,
+    :"base-webhook-callback-type"
   ]
 
   @type t :: %__MODULE__{
     :alertFilter => Opsgeniex.Model.AlertFilter.t | nil,
-    :alertActions => [String.t] | nil,
+    :forwardingEnabled => boolean() | nil,
+    :forwardingActionMappings => [Opsgeniex.Model.ActionMapping.t] | nil,
     :"callback-type" => String.t | nil,
     :url => String.t | nil,
-    :headers => %{optional(String.t) => String.t} | nil
+    :headers => %{optional(String.t) => String.t} | nil,
+    :addAlertDetails => boolean() | nil,
+    :addAlertDescription => boolean() | nil,
+    :"base-webhook-callback-type" => String.t | nil
   }
 
   alias Opsgeniex.Deserializer
@@ -28,6 +36,7 @@ defmodule Opsgeniex.Model.WebhookCallback do
   def decode(value) do
     value
      |> Deserializer.deserialize(:alertFilter, :struct, Opsgeniex.Model.AlertFilter)
+     |> Deserializer.deserialize(:forwardingActionMappings, :list, Opsgeniex.Model.ActionMapping)
   end
 end
 

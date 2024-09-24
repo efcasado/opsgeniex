@@ -16,7 +16,7 @@ defmodule Opsgeniex.Model.CreateScheduleOverridePayload do
   ]
 
   @type t :: %__MODULE__{
-    :alias => String.t,
+    :alias => String.t | nil,
     :user => Opsgeniex.Model.Recipient.t,
     :startDate => DateTime.t,
     :endDate => DateTime.t,

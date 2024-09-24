@@ -13,7 +13,8 @@ defmodule Opsgeniex.Model.AmazonSnsCallback do
     :forwardingActionMappings,
     :"callback-type",
     :topicArn,
-    :region
+    :region,
+    :newConfType
   ]
 
   @type t :: %__MODULE__{
@@ -22,7 +23,8 @@ defmodule Opsgeniex.Model.AmazonSnsCallback do
     :forwardingActionMappings => [Opsgeniex.Model.ActionMapping.t] | nil,
     :"callback-type" => String.t | nil,
     :topicArn => String.t | nil,
-    :region => String.t | nil
+    :region => String.t | nil,
+    :newConfType => boolean() | nil
   }
 
   alias Opsgeniex.Deserializer

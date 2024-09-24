@@ -10,7 +10,7 @@ defmodule Opsgeniex.Mixfile do
       start_permanent: Mix.env() == :prod,
       package: package(),
       description: """
-      OpsGenie OpenAPI Specification
+      Opsgenie OpenAPI Specification
       """,
       deps: deps()
     ]

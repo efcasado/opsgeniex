@@ -11,14 +11,20 @@ defmodule Opsgeniex.Model.IntegrationMeta do
     :id,
     :name,
     :enabled,
-    :type
+    :type,
+    :teamId,
+    :apiKey,
+    :emailAddress
   ]
 
   @type t :: %__MODULE__{
     :id => String.t | nil,
     :name => String.t | nil,
     :enabled => boolean() | nil,
-    :type => String.t | nil
+    :type => String.t | nil,
+    :teamId => String.t | nil,
+    :apiKey => String.t | nil,
+    :emailAddress => String.t | nil
   }
 
   def decode(value) do

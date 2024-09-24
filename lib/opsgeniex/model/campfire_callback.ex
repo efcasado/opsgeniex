@@ -24,7 +24,7 @@ defmodule Opsgeniex.Model.CampfireCallback do
     :token => String.t | nil,
     :subdomain => String.t | nil,
     :notify => boolean() | nil,
-    :rooms => %{optional(String.t) => String.t} | nil
+    :rooms => [String.t] | nil
   }
 
   alias Opsgeniex.Deserializer

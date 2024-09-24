@@ -21,7 +21,7 @@ defmodule Opsgeniex.Model.FlowdockCallback do
     :alertActions => [String.t] | nil,
     :"callback-type" => String.t | nil,
     :flowdockApiToken => String.t | nil,
-    :flowdockTags => %{optional(String.t) => String.t} | nil,
+    :flowdockTags => [String.t] | nil,
     :externalUsername => String.t | nil
   }
 

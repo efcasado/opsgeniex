@@ -16,10 +16,10 @@ defmodule Opsgeniex.Model.CallbackCondition do
   ]
 
   @type t :: %__MODULE__{
-    :field => String.t | nil,
+    :field => String.t,
     :not => boolean() | nil,
-    :operation => String.t | nil,
-    :expectedValue => String.t | nil,
+    :operation => String.t,
+    :expectedValue => String.t,
     :order => integer() | nil
   }
 

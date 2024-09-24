@@ -20,14 +20,27 @@ defmodule Opsgeniex.Model.SolarwindsIntegration do
     :ignoreRecipientsFromPayload,
     :recipients,
     :isAdvanced,
+    :ignoreRespondersFromPayload,
+    :ignoreTagsFromPayload,
+    :ignoreExtraPropertiesFromPayload,
+    :responders,
+    :priority,
+    :customPriority,
+    :tags,
+    :extraProperties,
+    :assignedTeam,
     :"feature-type",
     :allowConfigurationAccess,
+    :allowReadAccess,
     :allowWriteAccess,
+    :allowDeleteAccess,
     :alertFilter,
     :alertActions,
     :"callback-type",
     :sendAlertActions,
-    :"bidirectional-callback-type"
+    :"bidirectional-callback-type",
+    :sendViaMarid,
+    :sendViaOEC
   ]
 
   @type t :: %__MODULE__{
@@ -43,14 +56,27 @@ defmodule Opsgeniex.Model.SolarwindsIntegration do
     :ignoreRecipientsFromPayload => boolean() | nil,
     :recipients => [Opsgeniex.Model.Recipient.t] | nil,
     :isAdvanced => boolean() | nil,
+    :ignoreRespondersFromPayload => boolean() | nil,
+    :ignoreTagsFromPayload => boolean() | nil,
+    :ignoreExtraPropertiesFromPayload => boolean() | nil,
+    :responders => [Opsgeniex.Model.Recipient.t] | nil,
+    :priority => String.t | nil,
+    :customPriority => String.t | nil,
+    :tags => [String.t] | nil,
+    :extraProperties => %{optional(String.t) => String.t} | nil,
+    :assignedTeam => Opsgeniex.Model.TeamMeta.t | nil,
     :"feature-type" => String.t | nil,
     :allowConfigurationAccess => boolean() | nil,
+    :allowReadAccess => boolean() | nil,
     :allowWriteAccess => boolean() | nil,
+    :allowDeleteAccess => boolean() | nil,
     :alertFilter => Opsgeniex.Model.AlertFilter.t | nil,
     :alertActions => [String.t] | nil,
     :"callback-type" => String.t | nil,
     :sendAlertActions => boolean() | nil,
-    :"bidirectional-callback-type" => String.t | nil
+    :"bidirectional-callback-type" => String.t | nil,
+    :sendViaMarid => boolean() | nil,
+    :sendViaOEC => boolean() | nil
   }
 
   alias Opsgeniex.Deserializer
@@ -59,6 +85,8 @@ defmodule Opsgeniex.Model.SolarwindsIntegration do
     value
      |> Deserializer.deserialize(:ownerTeam, :struct, Opsgeniex.Model.TeamMeta)
      |> Deserializer.deserialize(:recipients, :list, Opsgeniex.Model.Recipient)
+     |> Deserializer.deserialize(:responders, :list, Opsgeniex.Model.Recipient)
+     |> Deserializer.deserialize(:assignedTeam, :struct, Opsgeniex.Model.TeamMeta)
      |> Deserializer.deserialize(:alertFilter, :struct, Opsgeniex.Model.AlertFilter)
   end
 end
