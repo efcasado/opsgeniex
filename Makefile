@@ -1,4 +1,5 @@
-.PHONY: all codegen clean
+.PHONY: all clean codegen
+.PHONE: deps compile shell
 
 SHELL := BASH_ENV=.rc /bin/bash --noprofile
 
@@ -9,7 +10,16 @@ OPSGENIE_OPENAPI_SPEC_REPO?=git@github.com:bougar/opsgenie-oas.git
 OPSGENIE_OPENAPI_SPEC_VERSION?=master
 OPSGENIE_OPENAPI_SPEC_DIR?=opsgenie-oas
 
-all: codegen build
+all: codegen build deps compile
+
+deps:
+	mix deps.get
+
+compile:
+	mix compile
+
+shell:
+	iex -S mix
 
 opsgenie-oas:
 	git clone ${OPSGENIE_OPENAPI_SPEC_REPO} --branch ${OPSGENIE_OPENAPI_SPEC_VERSION} --depth 1
@@ -18,8 +28,9 @@ opsgenie-oas/swagger.json:
 	cd ${OPSGENIE_OPENAPI_SPEC_DIR}/multi-file-swagger && npm install
 	cd ${OPSGENIE_OPENAPI_SPEC_DIR} && ./multi-file-swagger/index.js -- swagger.yaml > swagger.json
 
+codegen: lib/opsgeniex
 
-codegen: $(OPSGENIE_OPENAPI_SPEC_DIR) $(OPSGENIE_OPENAPI_SPEC_DIR)/swagger.json
+lib/opsgeniex: $(OPSGENIE_OPENAPI_SPEC_DIR) $(OPSGENIE_OPENAPI_SPEC_DIR)/swagger.json
 	@docker run --rm -v "${PWD}:/local" ${OPENAPI_CODEGEN_IMAGE}:${OPENAPI_CODEGEN_VERSION} generate \
 		-i /local/opsgenie-oas/swagger.json \
 		--skip-validate-spec \
